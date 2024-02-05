@@ -1,1 +1,7 @@
 php/
+node_modules/
+package-lock.json
+.idea
+src/*.json
+src/css/style.css
+dist/

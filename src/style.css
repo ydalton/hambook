@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+	font-family: sans-serif;
+}
+
+td,th {
+	@apply border-2 p-2 text-center
+}
+
+td {
+	@apply border-gray-300
+}
+
+th {
+	@apply bg-gray-300 border-gray-400
+}
