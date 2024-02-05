@@ -17,3 +17,15 @@ td {
 th {
 	@apply bg-gray-300 border-gray-400
 }
+
+.btn {
+	@apply bg-green-500 p-2 border-2 border-green-700 rounded text-white
+}
+
+.form-item {
+	@apply flex flex-col my-2
+}
+
+input, textarea {
+	@apply border-2 border-gray-300 rounded
+}
