@@ -53,17 +53,16 @@ function country_flag_emoji(string $countryIsoAlpha2): string
 			</button>
 		</div>
 		<table class="m-4 rounded">
-			<tr>
-				<?php
+			<?php
+			if(!empty($log)) {
+				echo '<tr>';
 				$fields = ["Date", "Time", "Callsign", "Frequency",
 					"Mode", "Flag", "Country", "Operator name", "Comment"];
 				forEach($fields as $field) {
 					echo "<th>$field</th>\r\n";
 				}
-				?>
-			</tr>
-			<?php
-			foreach ($log as $log_item) {
+				echo '</tr>';
+				foreach ($log as $log_item) {
 			?>
 			<tr>
 				<td><?php echo date("Y-m-d", $log_item["time"]) ?></td>
@@ -76,6 +75,11 @@ function country_flag_emoji(string $countryIsoAlpha2): string
 				<td><?php echo $log_item["operator"] ?></td>
 				<td><?php echo $log_item["comment"] ?></td>
 			</tr>
+			<?php
+				}
+			} else {
+			?>
+				<p class="font-bold">No log entries found.</p>
 			<?php } ?>
 		</table>
 	</main>
