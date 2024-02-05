@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-$logfile_name = "./initdata.json";
+$logfile_name = "./log.json";
 $log_file = fopen($logfile_name, "r") or die("Can't open log file");
 $log = json_decode(fread($log_file, filesize($logfile_name)), true);
 fclose($log_file);
@@ -79,49 +79,58 @@ function country_flag_emoji(string $countryIsoAlpha2): string
 			<?php } ?>
 		</table>
 	</main>
-	<div id="modal" class="p-8 popup absolute bg-white border-2 border-gray-300 rounded-lg shadow-xl">
-		<h1 class="text-3xl">Add new contact</h1>
-		<form action="/newcontact.php" method="post">
-			<div class="form-item">
-				<label>Name of operator</label>
-				<input type="text" name="name" required></input>
-			</div>
-			<div class="form-item">
-				<label>Callsign</label>
-				<input type="text" name="callsign" required></input>
-			</div>
-			<div class="form-item">
-				<label>Date and time</label>
-				<div class="flex flex-row space-x-2">
-					<input type="date" name="date" required></input>
-					<input type="time" name="time" required></input>
+	<div id="modal" class="background-shadow flex items-center justify-center">
+		<div class="p-8 bg-white border-2 border-gray-300 rounded-lg shadow-2xl">
+			<h1 class="text-3xl">Add new contact</h1>
+			<form action="/new.php" method="post">
+				<div class="form-item">
+					<label>Name of operator</label>
+					<input type="text" name="name" required></input>
 				</div>
-			</div>
-			<div class="form-item">
-				<label>Frequency</label>
-				<input type="number" step="0.001" name="frequency" required></input>
-			</div>
-			<div class="form-item">
-				<label>Country</label>
-				<input type="text" name="Country" required></input>
-			</div>
-			<div class="form-item">
-				<label>Comments</label>
-				<textarea name="comment" cols="30"></textarea>
-			</div>
-			<br/>
-			<button class="btn" type="submit">Confirm new contact</button>
-		</form>
+				<div class="form-item">
+					<label>Callsign</label>
+					<input type="text" name="callsign" required></input>
+				</div>
+				<div class="form-item">
+					<label>Date and time</label>
+					<div class="flex flex-row space-x-2">
+						<input type="date" name="date" required></input>
+						<input type="time" name="time" required></input>
+					</div>
+				</div>
+				<div class="form-item">
+					<label>Frequency</label>
+					<input type="number" step="0.001" name="frequency" required></input>
+				</div>
+				<div class="form-item">
+					<label>Country</label>
+					<input type="text" name="country" required></input>
+				</div>
+				<div class="form-item">
+					<label>Comments</label>
+					<textarea name="comment" cols="30"></textarea>
+				</div>
+				<br/>
+				<div class="flex justify-between">
+					<button class="btn" type="submit">Confirm new contact</button>
+					<button id="cancel" class="btn-normal">Cancel</button>
+				</div>
+			</form>
+		</div>
 	</div>
 	<script>
 		let button = document.getElementById("toggleBtn");
+		let cancel = document.getElementById("cancel");
 		let modal = document.getElementById("modal");
 
 		function hideModal() {
 			modal.classList.toggle("hidden");
 		}
 
+		modal.classList.toggle("hidden");
+
 		button.addEventListener("click", hideModal);
+		cancel.addEventListener("click", hideModal);
 	</script>
 </body>
 </html>

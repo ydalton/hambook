@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-	font-family: sans-serif;
+	font-family: "Noto Sans", sans-serif;
 }
 
 td,th {
@@ -18,8 +18,16 @@ th {
 	@apply bg-gray-300 border-gray-400
 }
 
+.btn-normal, .btn {
+	@apply border-2 rounded p-2 transition-colors
+}
+
+.btn-normal {
+	@apply bg-gray-200 border-gray-400 hover:bg-gray-100 hover:border-gray-300
+}
+
 .btn {
-	@apply bg-green-500 p-2 border-2 border-green-700 rounded text-white
+	@apply bg-green-500 border-green-700 hover:bg-green-400 hover:border-green-600 text-white
 }
 
 .form-item {
@@ -27,5 +35,10 @@ th {
 }
 
 input, textarea {
-	@apply border-2 border-gray-300 rounded
+	@apply border-2 border-gray-300 rounded p-1
+}
+
+.background-shadow {
+	background-color: rgba(0,0,0,.4);
+	@apply top-0 left-0 w-full h-full z-10 absolute
 }
