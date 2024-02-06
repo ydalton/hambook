@@ -16,7 +16,7 @@ $log = fopen($logfile, "r") or die("Cannot open log file, is path correct?");
 $decoded = json_decode(fread($log, filesize($logfile)), true);
 fclose($log);
 
-for($i = 0; $i < count($decoded); $i++) {
+for($i = 1; $i <= count($decoded); $i++) {
 	if($decoded[$i]["id"] == $id)
 		unset($decoded[$i]);
 }
