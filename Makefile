@@ -19,7 +19,12 @@ $(TARGET): $(SRC_DIR)/
 	mkdir -p $(TARGET)/css
 	@cp -v $(SRC_DIR)/*.php $(TARGET)/
 	@cp -vr $(SRC_DIR)/assets $(TARGET)/
+ifneq (,$(wildcard $(SRC_DIR)/log.json))
 	@cp -v $(SRC_DIR)/log.json $(TARGET)/
+else
+	echo "[]" > $(TARGET)/log.json
+endif
+	npm install
 	npx tailwindcss -i $(SRC_DIR)/style.css -o $(TARGET)/css/style.css
 
 php:
@@ -33,6 +38,6 @@ endif
 	rm -r $(PHP_DIR)/var/cache
 
 clean:
-	rm -rf $(TARGET) $(TARBALL) $(APK) $(LOG_DIR) $(PHP_DIR)
+	rm -rf $(TARGET) $(TARBALL) $(APK) $(LOG_DIR) $(PHP_DIR) node_modules
 
 .PHONY: $(TARGET) php
