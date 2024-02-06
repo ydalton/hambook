@@ -10,6 +10,9 @@ $log_file = fopen($logfile_name, "r") or die("Can't open log file");
 $log = json_decode(fread($log_file, filesize($logfile_name)), true);
 fclose($log_file);
 
+$colors = ["black", "yellow", "red", "green", "green"];
+$callsign = "ON8EI";
+
 ?>
 <!doctype html>
 <html>
@@ -22,9 +25,16 @@ fclose($log_file);
 		<div>
 			<img src="/assets/makerfabs.png">
 			<span class="font-bold text-3xl text-white">
-				Hambook - HL2 Logbook
+				Hambook - HL2 to HL2 Logbook
 			</span>
 		</div>
+		<p class="font-bold text-3xl bg-white p-2 rounded shadow-lg">
+		<?php for($i = 0; $i < strlen($callsign); $i++ ): ?>
+		<span class="text-<?php echo $colors[$i] ?>-500">
+			<?php echo $callsign[$i]; ?>
+		</span>
+		<?php endfor; ?>
+		</p>
 		<img src="/assets/hermes.png">
 	</header>
 	<main>
@@ -62,12 +72,12 @@ fclose($log_file);
 			<h1 class="text-3xl">Add new contact</h1>
 			<form action="/new.php" method="post">
 				<div class="form-item">
-					<label>Name of operator</label>
-					<input type="text" name="name" required></input>
-				</div>
-				<div class="form-item">
 					<label>Callsign</label>
 					<input type="text" name="callsign" required></input>
+				</div>
+				<div class="form-item">
+					<label>Name of operator</label>
+					<input type="text" name="name" required></input>
 				</div>
 				<div class="form-item">
 					<label>Date and time</label>
