@@ -3,6 +3,9 @@
 declare(strict_types=1);
 
 $logfile_name = "./log.json";
+$fields = ["Date", "Time", "Callsign", "Frequency",
+	"Mode", "Country", "Operator name", "Comment"];
+
 $log_file = fopen($logfile_name, "r") or die("Can't open log file");
 $log = json_decode(fread($log_file, filesize($logfile_name)), true);
 fclose($log_file);
@@ -31,20 +34,16 @@ fclose($log_file);
 			</button>
 		</div>
 		<table class="m-4 rounded">
-			<?php
-			if(!empty($log)) {
-				echo '<tr>';
-				$fields = ["Date", "Time", "Callsign", "Frequency",
-					"Mode", "Country", "Operator name", "Comment"];
-				forEach($fields as $field) {
-					echo "<th>$field</th>\r\n";
-				}
-				echo '</tr>';
-				foreach ($log as $log_item) {
-			?>
+			<?php if(!empty($log)): ?>
+			<tr>
+			<?php foreach($fields as $field): ?>
+				<th><?php echo $field ?></th>
+			<?php endforeach; ?>
+			</tr>
+			<?php foreach ($log as $log_item): ?>
 			<tr>
 				<td><?php echo date("Y-m-d", $log_item["time"]) ?></td>
-				<td class="text-red-500"><?php echo date("H:i", $log_item["time"]); ?></td>
+				<td class="text-red-500"><?php echo date("H:i", $log_item["time"])?></td>
 				<td class='font-bold'><?php echo $log_item["callsign"] ?></td>
 				<td><?php echo $log_item["frequency"] ?></td>
 				<td><?php echo $log_item["mode"] ?></td>
@@ -52,12 +51,10 @@ fclose($log_file);
 				<td><?php echo $log_item["operator"] ?></td>
 				<td><?php echo $log_item["comment"] ?></td>
 			</tr>
-			<?php
-				}
-			} else {
-			?>
+			<?php endforeach; ?>
+			<?php else: ?>
 				<p class="font-bold">No log entries found.</p>
-			<?php } ?>
+			<?php endif; ?>
 		</table>
 	</main>
 	<div id="modal" class="background-shadow flex items-center justify-center hidden">
