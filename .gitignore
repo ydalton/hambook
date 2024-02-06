@@ -5,3 +5,6 @@ package-lock.json
 src/*.json
 src/css/style.css
 dist/
+*.tar.gz
+apk.static
+logbook/

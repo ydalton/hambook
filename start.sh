@@ -18,4 +18,4 @@ else
 	sleep 0.1 && python3 -m webbrowser -t "http://$ADDRESS" &
 fi
 
-exec bwrap --dev-bind $PHP_DIR / --bind ./src /app --chdir /app $CMD
+exec bwrap --die-with-parent --unshare-ipc --unshare-pid --unshare-uts --dev-bind $PHP_DIR /  --bind ./src /app --chdir /app $CMD
