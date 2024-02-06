@@ -53,7 +53,7 @@ fclose($log_file);
 			</tr>
 			<?php endforeach; ?>
 			<?php else: ?>
-				<p class="font-bold">No log entries found.</p>
+				<p class="text-center p-2 font-bold">No log entries found.</p>
 			<?php endif; ?>
 		</table>
 	</main>
