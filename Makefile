@@ -25,7 +25,7 @@ else
 	echo "[]" > $(TARGET)/log.json
 endif
 	npm install
-	npx tailwindcss -i $(SRC_DIR)/style.css -o $(TARGET)/css/style.css
+	npx tailwindcss -i $(SRC_DIR)/style.css -o $(TARGET)/css/style.css --minify
 
 php:
 	rm -rf $(PHP_DIR)
@@ -38,6 +38,6 @@ endif
 	rm -r $(PHP_DIR)/var/cache
 
 clean:
-	rm -rf $(TARGET) $(TARBALL) $(APK) $(LOG_DIR) $(PHP_DIR) node_modules
+	rm -rf $(TARGET) $(TARBALL) $(APK) $(LOG_DIR) $(PHP_DIR) node_modules package-lock.json
 
 .PHONY: $(TARGET) php

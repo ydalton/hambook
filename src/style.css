@@ -7,7 +7,7 @@ body {
 }
 
 td,th {
-	@apply border-2 p-2 text-center
+	@apply border p-2 text-center
 }
 
 td {

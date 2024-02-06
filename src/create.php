@@ -22,6 +22,7 @@ $to_be_added["time"] = strtotime($_POST["date"] . " " . $_POST["time"]);
 $to_be_added["mode"] = "SSB";
 $to_be_added["country"] = $_POST["country"];
 $to_be_added["comment"] = $_POST["comment"];
+$to_be_added["id"] = count($decoded) + 1;
 
 array_push($decoded, $to_be_added);
 

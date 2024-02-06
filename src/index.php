@@ -3,21 +3,22 @@
 declare(strict_types=1);
 
 $logfile_name = "./log.json";
-$fields = ["Date", "Time", "Callsign", "Frequency",
-	"Mode", "Country", "Operator name", "Comment"];
+$fields = ["#", "Date", "Time", "Callsign", "Frequency",
+	"Mode", "Country", "Operator name", "Comment", "Actions"];
 
 $log_file = fopen($logfile_name, "r") or die("Can't open log file");
 $log = json_decode(fread($log_file, filesize($logfile_name)), true);
 fclose($log_file);
 
 $colors = ["black", "yellow", "red", "green", "green"];
-$callsign = "ON8EI";
+$callsign = 'ON8EI';
 
 ?>
 <!doctype html>
 <html>
 <head>
 	<link rel="stylesheet" href="/css/style.css">
+	<p class="text-yellow-500 text-green-500 hidden">
 </head>
 
 <body>
@@ -38,7 +39,7 @@ $callsign = "ON8EI";
 		<img src="/assets/hermes.png">
 	</header>
 	<main>
-		<div class="border-2 border-gray-200 p-4">
+		<div class="border border-gray-200 p-4">
 			<button id="toggleBtn" class="btn">
 				Add new contact
 			</button>
@@ -52,6 +53,7 @@ $callsign = "ON8EI";
 			</tr>
 			<?php foreach ($log as $log_item): ?>
 			<tr>
+				<td><?php echo $log_item["id"] ?></td>
 				<td><?php echo date("Y-m-d", $log_item["time"]) ?></td>
 				<td class="text-red-500"><?php echo date("H:i", $log_item["time"])?></td>
 				<td class='font-bold'><?php echo $log_item["callsign"] ?></td>
@@ -60,6 +62,12 @@ $callsign = "ON8EI";
 				<td><?php echo $log_item["country"] ?> </td>
 				<td><?php echo $log_item["operator"] ?></td>
 				<td><?php echo $log_item["comment"] ?></td>
+				<td>
+				<a onclick="return confirm('Click \'OK\' to confirm deletion.')"
+					href="/delete.php?id=<?php echo $log_item["id"]?>">
+					🗑️
+				</span>
+				</td>
 			</tr>
 			<?php endforeach; ?>
 			<?php else: ?>
@@ -68,9 +76,9 @@ $callsign = "ON8EI";
 		</table>
 	</main>
 	<div id="modal" class="background-shadow flex items-center justify-center hidden">
-		<div class="p-8 bg-white border-2 border-gray-300 rounded-lg shadow-2xl">
+		<div class="p-8 bg-white border border-gray-300 rounded-lg shadow-2xl">
 			<h1 class="text-3xl">Add new contact</h1>
-			<form action="/new.php" method="post">
+			<form action="/create.php" method="post">
 				<div class="form-item">
 					<label>Callsign</label>
 					<input type="text" name="callsign" required></input>
