@@ -17,12 +17,12 @@ fclose($log_file);
 <body>
 	<header class="bg-blue-400 flex p-6 justify-between items-center">
 		<div>
-			<img src="/makerfabs.png">
+			<img src="/assets/makerfabs.png">
 			<span class="font-bold text-3xl text-white">
 				Hambook - HL2 Logbook
 			</span>
 		</div>
-		<img src="/hermes.png">
+		<img src="/assets/hermes.png">
 	</header>
 	<main>
 		<div class="border-2 border-gray-200 p-4">
