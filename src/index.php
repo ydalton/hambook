@@ -7,28 +7,6 @@ $log_file = fopen($logfile_name, "r") or die("Can't open log file");
 $log = json_decode(fread($log_file, filesize($logfile_name)), true);
 fclose($log_file);
 
-function country_flag_emoji(string $countryIsoAlpha2): string
-{
-	$unicodePrefix = "\xF0\x9F\x87";
-	$unicodeAdditionForLowerCase = 0x45;
-	$unicodeAdditionForUpperCase = 0x65;
-
-	if (preg_match('/^[A-Z]{2}$/', $countryIsoAlpha2)) {
-		$emoji = $unicodePrefix . chr(ord($countryIsoAlpha2[0])
-			+ $unicodeAdditionForUpperCase)
-			. $unicodePrefix . chr(ord($countryIsoAlpha2[1])
-			+ $unicodeAdditionForUpperCase);
-	} elseif (preg_match('/^[a-z]{2}$/', $countryIsoAlpha2)) {
-		$emoji = $unicodePrefix . chr(ord($countryIsoAlpha2[0])
-			+ $unicodeAdditionForLowerCase)
-			. $unicodePrefix . chr(ord($countryIsoAlpha2[1])
-			+ $unicodeAdditionForLowerCase);
-	} else {
-		$emoji = '';
-	}
-
-	return strlen($emoji) ? $emoji : '';
-}
 ?>
 <!doctype html>
 <html>
@@ -57,7 +35,7 @@ function country_flag_emoji(string $countryIsoAlpha2): string
 			if(!empty($log)) {
 				echo '<tr>';
 				$fields = ["Date", "Time", "Callsign", "Frequency",
-					"Mode", "Flag", "Country", "Operator name", "Comment"];
+					"Mode", "Country", "Operator name", "Comment"];
 				forEach($fields as $field) {
 					echo "<th>$field</th>\r\n";
 				}
@@ -70,7 +48,6 @@ function country_flag_emoji(string $countryIsoAlpha2): string
 				<td class='font-bold'><?php echo $log_item["callsign"] ?></td>
 				<td><?php echo $log_item["frequency"] ?></td>
 				<td><?php echo $log_item["mode"] ?></td>
-				<td><?php echo country_flag_emoji("be") ?></td>
 				<td><?php echo $log_item["country"] ?> </td>
 				<td><?php echo $log_item["operator"] ?></td>
 				<td><?php echo $log_item["comment"] ?></td>
@@ -83,7 +60,7 @@ function country_flag_emoji(string $countryIsoAlpha2): string
 			<?php } ?>
 		</table>
 	</main>
-	<div id="modal" class="background-shadow flex items-center justify-center">
+	<div id="modal" class="background-shadow flex items-center justify-center hidden">
 		<div class="p-8 bg-white border-2 border-gray-300 rounded-lg shadow-2xl">
 			<h1 class="text-3xl">Add new contact</h1>
 			<form action="/new.php" method="post">
@@ -130,8 +107,6 @@ function country_flag_emoji(string $countryIsoAlpha2): string
 		function hideModal() {
 			modal.classList.toggle("hidden");
 		}
-
-		modal.classList.toggle("hidden");
 
 		button.addEventListener("click", hideModal);
 		cancel.addEventListener("click", hideModal);
