@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-$logfile_name = "./log.json";
+$logfile_name = "../storage/log.json";
 $fields = ["#", "Date", "Time", "Callsign", "Frequency",
 	"Mode", "Country", "Operator name", "Comment", "Actions"];
 

@@ -2,7 +2,7 @@ php/
 node_modules/
 package-lock.json
 .idea
-src/*.json
+storage/
 src/css/style.css
 dist/
 *.tar.gz

@@ -3,23 +3,24 @@ TARGET	:=	dist
 PHP_DIR	:=	php
 START	:=	start.sh
 LOG_DIR	:=	logbook
-TARBALL	:=	$(LOG_DIR)-$(shell arch).tar.gz
 APK	:=	apk.static
 
 pkg: $(TARGET) $(START) php
 	rm -rf $(LOG_DIR)
 	mkdir $(LOG_DIR)
+	mkdir $(LOG_DIR)/storage
+	echo "[{\"pk_counter\": 0}]" > $(LOG_DIR)/storage/log.json
 	cp -r $(TARGET) $(PHP_DIR) $(LOG_DIR)
 	sed 's/$(SRC_DIR)/$(TARGET)/g' $(START) > $(LOG_DIR)/$(START)
 	chmod +x $(LOG_DIR)/$(START)
-	tar -czf $(TARBALL) $(LOG_DIR)
+	tar -czf $(LOG_DIR)-$(shell uname | tr '[A-Z]' '[a-z]')-$(shell arch).tar.gz $(LOG_DIR)
+	rm -rf $(LOG_DIR)
 
 $(TARGET): $(SRC_DIR)/
 	rm -rf $(TARGET)
 	mkdir -p $(TARGET)/css
 	@cp -v $(SRC_DIR)/*.php $(TARGET)/
 	@cp -vr $(SRC_DIR)/assets $(TARGET)/
-	echo "[]" > $(TARGET)/log.json
 	npm install
 	npx tailwindcss -i $(SRC_DIR)/style.css -o $(TARGET)/css/style.css --minify
 
