@@ -14,6 +14,9 @@ $decoded = json_decode(fread($log, filesize($logfile)), true);
 
 fclose($log);
 
+// Increment the primary key counter
+$pk_counter = $decoded[0]["pk_counter"]++;
+
 $to_be_added["operator"] = $_POST["name"];
 $to_be_added["callsign"] = $_POST["callsign"];
 $to_be_added["frequency"] = $_POST["frequency"];
@@ -22,7 +25,7 @@ $to_be_added["time"] = strtotime($_POST["date"] . " " . $_POST["time"]);
 $to_be_added["mode"] = "SSB";
 $to_be_added["country"] = $_POST["country"];
 $to_be_added["comment"] = $_POST["comment"];
-$to_be_added["id"] = count($decoded) + 1;
+$to_be_added["id"] = $pk_counter;
 
 array_push($decoded, $to_be_added);
 

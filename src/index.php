@@ -7,7 +7,8 @@ $fields = ["#", "Date", "Time", "Callsign", "Frequency",
 	"Mode", "Country", "Operator name", "Comment", "Actions"];
 
 $log_file = fopen($logfile_name, "r") or die("Can't open log file");
-$log = json_decode(fread($log_file, filesize($logfile_name)), true);
+// Skip the first array entry, cuz it contains data internal to the database
+$log = array_slice(json_decode(fread($log_file, filesize($logfile_name)), true), 1);
 fclose($log_file);
 
 $colors = ["black", "yellow", "red", "green", "green"];
@@ -51,9 +52,9 @@ $callsign = 'ON8EI';
 				<th><?php echo $field ?></th>
 			<?php endforeach; ?>
 			</tr>
-			<?php foreach ($log as $log_item): ?>
+			<?php foreach (array_values($log) as $log_number => $log_item): ?>
 			<tr>
-				<td><?php echo $log_item["id"] ?></td>
+				<td><?php echo $log_number + 1 ?></td>
 				<td><?php echo date("Y-m-d", $log_item["time"]) ?></td>
 				<td class="text-red-500"><?php echo date("H:i", $log_item["time"])?></td>
 				<td class='font-bold'><?php echo $log_item["callsign"] ?></td>

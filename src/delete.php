@@ -1,6 +1,6 @@
 <?php
 
-$logfile = "./log.json";
+$logfile = "../storage/log.json";
 
 if(strcmp($_SERVER['REQUEST_METHOD'], "GET")) {
 	http_response_code(403);
@@ -16,7 +16,7 @@ $log = fopen($logfile, "r") or die("Cannot open log file, is path correct?");
 $decoded = json_decode(fread($log, filesize($logfile)), true);
 fclose($log);
 
-for($i = 1; $i <= count($decoded); $i++) {
+for($i = 1; $i < count($decoded); $i++) {
 	if($decoded[$i]["id"] == $id)
 		unset($decoded[$i]);
 }
