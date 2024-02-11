@@ -2,14 +2,28 @@ SRC_DIR	:=	src
 TARGET	:=	dist
 PHP_DIR	:=	php
 START	:=	start.sh
+BAT		:=	start.bat
 LOG_DIR	:=	logbook
-APK	:=	apk.static
+APK		:=	apk.static
+
+win32: $(TARGET) $(BAT) win32php
+	rm -rf $(LOG_DIR)
+	mkdir $(LOG_DIR)
+	mkdir $(LOG_DIR)/storage
+	echo "[{\"pk_counter\": 1}]" > $(LOG_DIR)/storage/log.json
+	cp -r $(TARGET) $(BAT) $(PHP_DIR) $(LOG_DIR)
+	rm -f logbook-win32.zip
+	zip -r logbook-win32.zip $(LOG_DIR)
+
+win32php:
+	wget https://windows.php.net/downloads/releases/php-8.3.2-nts-Win32-vs16-x64.zip
+	unzip php-8.3.2-nts-Win32-vs16-x64.zip -d $(PHP_DIR)
 
 pkg: $(TARGET) $(START) php
 	rm -rf $(LOG_DIR)
 	mkdir $(LOG_DIR)
 	mkdir $(LOG_DIR)/storage
-	echo "[{\"pk_counter\": 0}]" > $(LOG_DIR)/storage/log.json
+	echo "[{\"pk_counter\": 1}]" > $(LOG_DIR)/storage/log.json
 	cp -r $(TARGET) $(PHP_DIR) $(LOG_DIR)
 	sed 's/$(SRC_DIR)/$(TARGET)/g' $(START) > $(LOG_DIR)/$(START)
 	chmod +x $(LOG_DIR)/$(START)
@@ -35,6 +49,6 @@ endif
 	rm -r $(PHP_DIR)/var/cache
 
 clean:
-	rm -rf $(TARGET) $(TARBALL) $(APK) $(LOG_DIR) $(PHP_DIR) node_modules package-lock.json
+	rm -rf $(TARGET) *.zip *.tar.gz $(APK) $(LOG_DIR) $(PHP_DIR) node_modules package-lock.json
 
 .PHONY: $(TARGET) php

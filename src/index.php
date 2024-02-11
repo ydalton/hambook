@@ -7,8 +7,11 @@ $fields = ["#", "Date", "Time", "Callsign", "Frequency",
 	"Mode", "Country", "Operator name", "Comment", "Actions"];
 
 $log_file = fopen($logfile_name, "r") or die("Can't open log file");
+$decoded = json_decode(fread($log_file, filesize($logfile_name)), true);
+if(!$decoded)
+	die("The logfile could not be decoded. Syntax error?");
 // Skip the first array entry, cuz it contains data internal to the database
-$log = array_slice(json_decode(fread($log_file, filesize($logfile_name)), true), 1);
+$log = array_slice($decoded, 1);
 fclose($log_file);
 
 $colors = ["black", "yellow", "red", "green", "green"];
