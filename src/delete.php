@@ -12,18 +12,20 @@ $id = $_GET["id"];
 if (!$id)
 	die("No ID specified.\n");
 
-$log = fopen($logfile, "r") or die("Cannot open log file, is path correct?");
-$decoded = json_decode(fread($log, filesize($logfile)), true);
-fclose($log);
-
-for($i = 1; $i < count($decoded); $i++) {
-	if($decoded[$i]["id"] == $id)
-		unset($decoded[$i]);
+$pdo = "";
+try {
+    $pdo = new PDO("sqlite:$logfile_name");
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die('Connection failed: ' . $e->getMessage() . $e->errorInfo);
 }
 
-$log = fopen($logfile, "w");
-fwrite($log, json_encode($decoded));
-fclose($log);
+try {
+    $stmt = $pdo->prepare("DELETE FROM contacts WHERE id = :id");
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+} catch (PDOException $e) {
+    die("Can't delete entry: " . $e->getMessage());
+}
 
 header("Location: /");
-

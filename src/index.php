@@ -76,7 +76,7 @@ $colors = ["black", "yellow", "red", "green", "green"];
 			<?php foreach (array_values($log) as $log_number => $log_item): ?>
 			<tr>
 				<td><?php echo $log_number + 1 ?></td>
-				<td><?php echo date("Y-m-d", $log_item["time"]) ?></td>
+				<td><?php echo date("Y-m-d", intval($log_item["time"])) ?></td>
 				<td class="text-red-500"><?php echo date("H:i", $log_item["time"])?></td>
 				<td class='font-bold'><?php echo $log_item["callsign"] ?></td>
 				<td><?php echo $log_item["frequency"] ?></td>

@@ -44,7 +44,7 @@ ifeq (,$(wildcard ./$(APK)))
 	wget https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v2.14.0/$(shell arch)/$(APK)
 	chmod +x ./$(APK)
 endif
-	unshare -U --map-user=0 --map-group=0 ./$(APK) --arch $(shell arch) -X "http://dl-cdn.alpinelinux.org/alpine/latest-stable/main" -X "http://dl-cdn.alpinelinux.org/alpine/latest-stable/community" -U --allow-untrusted --root $(PHP_DIR) --initdb add php busybox
+	unshare -U --map-user=0 --map-group=0 ./$(APK) --arch $(shell arch) -X "http://dl-cdn.alpinelinux.org/alpine/latest-stable/main" -X "http://dl-cdn.alpinelinux.org/alpine/latest-stable/community" -U --allow-untrusted --root $(PHP_DIR) --initdb add php php-pdo_sqlite busybox
 	mkdir -p $(PHP_DIR)/app
 	rm -r $(PHP_DIR)/var/cache
 

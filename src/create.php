@@ -8,31 +8,34 @@ if(strcmp($_SERVER['REQUEST_METHOD'], "POST")) {
 	die("What are you doing here? How did you get here? You're not supposed to be here!\n");
 }
 
-$logfile = "../storage/log.json";
+$pdo = "";
+try {
+    $pdo = new PDO("sqlite:$logfile_name");
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die('Connection failed: ' . $e->getMessage());
+}
 
-$log = fopen($logfile, "r");
+$stmt = $pdo->prepare("
+    INSERT INTO contacts
+    (callsign, frequency, mode, time, country, operator, comment)
+    VALUES (:callsign, :frequency, :mode, :time, :country, :operator, :comment)
+");
 
-$decoded = json_decode(fread($log, filesize($logfile)), true);
+$stmt->bindParam(':callsign', $_POST["callsign"], PDO::PARAM_STR);
+$stmt->bindParam(':frequency', $_POST["frequency"], PDO::PARAM_STR);
+$stmt->bindValue(':mode', 'SSB', PDO::PARAM_STR);
+$stmt->bindValue(':time', strtotime($_POST["date"] . " " . $_POST["time"]), PDO::PARAM_INT);
+$stmt->bindParam(':country', $_POST["country"], PDO::PARAM_STR);
+$stmt->bindParam(':operator', $_POST["name"], PDO::PARAM_STR);
+$stmt->bindParam(':comment', $_POST["comment"], PDO::PARAM_STR);
 
-fclose($log);
+// Execute the prepared statement
+try {
+    $stmt->execute();
+} catch (PDOException $e) {
+    die('Insertion failed: ' . $e->getMessage());
+}
 
-// Increment the primary key counter
-$pk_counter = $decoded[0]["pk_counter"]++;
-
-$to_be_added["operator"] = $_POST["name"];
-$to_be_added["callsign"] = $_POST["callsign"];
-$to_be_added["frequency"] = $_POST["frequency"];
-$to_be_added["time"] = strtotime($_POST["date"] . " " . $_POST["time"]);
-// This can be changed later
-$to_be_added["mode"] = "SSB";
-$to_be_added["country"] = $_POST["country"];
-$to_be_added["comment"] = $_POST["comment"];
-$to_be_added["id"] = $pk_counter;
-
-array_push($decoded, $to_be_added);
-
-$log = fopen($logfile, "w");
-fwrite($log, json_encode($decoded));
-fclose($log);
-
+/* Redirect */
 header("Location: /");
