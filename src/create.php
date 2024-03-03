@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+require_once('./decls.php');
 
 /* Normally this should not be possible */
 if(strcmp($_SERVER['REQUEST_METHOD'], "POST")) {

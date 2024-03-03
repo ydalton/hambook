@@ -1,6 +1,6 @@
 <?php
 
-$logfile = "../storage/log.json";
+require_once('./decls.php');
 
 if(strcmp($_SERVER['REQUEST_METHOD'], "GET")) {
 	http_response_code(403);

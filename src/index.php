@@ -1,21 +1,39 @@
 <?php
 
-declare(strict_types=1);
+require_once "./decls.php";
 
-$logfile_name = "../storage/log.json";
 $fields = ["#", "Date", "Time", "Callsign", "Frequency",
 	"Mode", "Country", "Operator name", "Comment", "Actions"];
 
-$log_file = fopen($logfile_name, "r") or die("Can't open log file");
-$decoded = json_decode(fread($log_file, filesize($logfile_name)), true);
-if(!$decoded)
-	die("The logfile could not be decoded. Syntax error?");
-// Skip the first array entry, cuz it contains data internal to the database
-$log = array_slice($decoded, 1);
-fclose($log_file);
+$pdo = "";
+try {
+    $pdo = new PDO("sqlite:$logfile_name");
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die('Connection failed: ' . $e->getMessage() . $e->errorInfo);
+}
+
+try {
+    $pdo->exec(
+	'CREATE TABLE IF NOT EXISTS contacts (
+	    id INTEGER PRIMARY KEY,
+	    callsign VARCHAR(255),
+	    frequency FLOAT,
+	    mode VARCHAR(255),
+	    time INTEGER,
+	    country VARCHAR(255),
+	    operator VARCHAR(255),
+	    comment TEXT
+	)'
+    );
+} catch(Exception $e) {
+    die('Creating db failed: ' . $e->getMessage());
+}
+
+$stmt = $pdo->query("SELECT * FROM contacts");
+$log = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $colors = ["black", "yellow", "red", "green", "green"];
-$callsign = 'ON8EI';
 
 ?>
 <!doctype html>
